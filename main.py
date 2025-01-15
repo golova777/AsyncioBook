@@ -1,3 +1,33 @@
+import asyncio
+from util import delay
+from util import async_timed
+from asyncio import Future
+import requests
+
+
+@async_timed()
+async def cpu_bound_work() -> int:
+    counter = 0
+    for i in range(10000000):
+        counter += 1
+    return counter
+
+async def main() -> None:
+    loop = asyncio.get_event_loop()
+    loop.slow_callback_duration = 0.500
+    task_one = asyncio.create_task(cpu_bound_work())
+    await task_one
+
+
+asyncio.run(main())
+
+
+
+
+
+
+
+
 #
 # import subprocess
 # import json
@@ -67,28 +97,7 @@
 # finally:
 #     server_socket.close()
 
-import asyncio
-from util import delay
-from util import async_timed
-from asyncio import Future
-import requests
 
-
-@async_timed()
-async def cpu_bound_work() -> int:
-    counter = 0
-    for i in range(10000000):
-        counter += 1
-    return counter
-
-async def main() -> None:
-    loop = asyncio.get_event_loop()
-    loop.slow_callback_duration = 0.500
-    task_one = asyncio.create_task(cpu_bound_work())
-    await task_one
-
-
-asyncio.run(main())
 
 # @async_timed()
 # async def cpu_bound_work() -> int:
